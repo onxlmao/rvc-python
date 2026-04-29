@@ -16,15 +16,13 @@ torchvision>=0.18.1
 torchaudio>=2.3.1
 torchcodec>=0.8.1
 
-faiss-cpu==1.7.3; python_version < "3.12"
-faiss-cpu>=1.7.3; python_version >= "3.12"
+faiss-cpu>=1.8.0
 
 # Machine learning, NLP and deep learning
 transformers>=4.49.0
 scikit-learn
 einops>=0.8.0
 git+https://github.com/fumiama/fairseq.git
-
 
 # Pitch and sound processing
 librosa>=0.10.2
@@ -33,17 +31,29 @@ praat-parselmouth
 soundfile>=0.13.0
 pedalboard
 
+# Pitch extraction algorithms
+pyworld>=0.3.4
+torchcrepe>=0.0.24
+
 # Data processing and calculation
-numpy>=1.25.2,<2.0.0
-numba>=0.57.0
-scipy>=1.15.0
+numpy>=1.26.4
+numba>=0.60.0
+scipy>=1.14.0
 matplotlib>=3.7.2
+
+# Audio I/O
+av>=12.0.0
 
 # Implementation and web framework
 gradio>=5.23.3
 requests>=2.32.3
 aiohttp
 pysrt
+
+# API server
+fastapi>=0.115.0
+uvicorn>=0.30.0
+loguru>=0.7.0
 
 # Utility section
 yt-dlp>=2026.03.17

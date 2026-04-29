@@ -11,13 +11,25 @@ from time import time as ttime
 import faiss
 import librosa
 import numpy as np
-import parselmouth
-import pyworld
 import torch
 import torch.nn.functional as F
-import torchcrepe
 from pathlib import Path
 from scipy import signal
+
+try:
+    import parselmouth
+except ImportError:
+    parselmouth = None
+
+try:
+    import pyworld
+except ImportError:
+    pyworld = None
+
+try:
+    import torchcrepe
+except ImportError:
+    torchcrepe = None
 
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -100,6 +112,11 @@ class Pipeline(object):
         f0_mel_min = 1127 * np.log(1 + f0_min / 700)
         f0_mel_max = 1127 * np.log(1 + f0_max / 700)
         if f0_method == "pm":
+            if parselmouth is None:
+                raise ImportError(
+                    "praat-parselmouth is required for 'pm' pitch extraction. "
+                    "Install it with: pip install praat-parselmouth"
+                )
             f0 = (
                 parselmouth.Sound(x, self.sr)
                 .to_pitch_ac(
@@ -116,11 +133,21 @@ class Pipeline(object):
                     f0, [[pad_size, p_len - len(f0) - pad_size]], mode="constant"
                 )
         elif f0_method == "harvest":
+            if pyworld is None:
+                raise ImportError(
+                    "pyworld is required for 'harvest' pitch extraction. "
+                    "Install it with: pip install pyworld"
+                )
             input_audio_path2wav[input_audio_path] = x.astype(np.double)
             f0 = cache_harvest_f0(input_audio_path, self.sr, f0_max, f0_min, 10)
             if filter_radius > 2:
                 f0 = signal.medfilt(f0, 3)
         elif f0_method == "crepe":
+            if torchcrepe is None:
+                raise ImportError(
+                    "torchcrepe is required for 'crepe' pitch extraction. "
+                    "Install it with: pip install torchcrepe"
+                )
             model = "full"
             # Pick a batch size that doesn't cause memory errors on your gpu
             batch_size = 512
@@ -367,7 +394,7 @@ class Pipeline(object):
             )
             pitch = pitch[:p_len]
             pitchf = pitchf[:p_len]
-            if "mps" not in str(self.device) or "xpu" not in str(self.device):
+            if "mps" not in str(self.device) and "xpu" not in str(self.device):
                 pitchf = pitchf.astype(np.float32)
             pitch = torch.tensor(pitch, device=self.device).unsqueeze(0).long()
             pitchf = torch.tensor(pitchf, device=self.device).unsqueeze(0).float()
