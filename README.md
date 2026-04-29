@@ -33,26 +33,22 @@ https://github.com/daswer123/rvc-python/assets/22278673/6ecb590e-8a71-46aa-8ade-
 ### Basic Installation (CPU only)
 
 ```bash
-pip install rvc-python
+pip install git+https://github.com/onxlmao/rvc-python.git
 ```
 
 ### Recommended Installation (with GPU support)
 
-Recommended python version: 3.10
+Recommended python version: 3.10+
 
 For Windows:
 ```bash
-py -3.10 -m venv venv
-venv\Scripts\activate
-pip install rvc-python
+pip install git+https://github.com/onxlmao/rvc-python.git
 pip install torch==2.1.1+cu118 torchaudio==2.1.1+cu118 --index-url https://download.pytorch.org/whl/cu118
 ```
 
 For Linux:
 ```bash
-python3.10 -m venv venv
-source venv/bin/activate
-pip install rvc-python
+pip install git+https://github.com/onxlmao/rvc-python.git
 pip install torch==2.1.1+cu118 torchaudio==2.1.1+cu118 --index-url https://download.pytorch.org/whl/cu118
 ```
 
