@@ -4,7 +4,7 @@ from rvc_python.lib.infer_pack.models_onnx import SynthesizerTrnMsNSFsidM
 
 
 def export_onnx(ModelPath, ExportedPath):
-    cpt = torch.load(ModelPath, map_location="cpu", weights_only=False)
+    cpt = torch.load(ModelPath, map_location="cpu", weights_only=False, mmap=False)
     cpt["config"][-3] = cpt["weight"]["emb_g.weight"].shape[0]
     vec_channels = 256 if cpt.get("version", "v1") == "v1" else 768
 

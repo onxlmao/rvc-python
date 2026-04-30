@@ -101,7 +101,7 @@ class VC:
         logger.info(f"Loading: {person}")
         # print(sid,person)
 
-        self.cpt = torch.load(sid, map_location="cpu", weights_only=False)
+        self.cpt = torch.load(sid, map_location="cpu", weights_only=False, mmap=False)
         self.tgt_sr = self.cpt["config"][-1]
         self.cpt["config"][-3] = self.cpt["weight"]["emb_g.weight"].shape[0]  # n_spk
         self.if_f0 = self.cpt.get("f0", 1)
