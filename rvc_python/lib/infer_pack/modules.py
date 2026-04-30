@@ -71,8 +71,8 @@ class ConvReluNorm(nn.Module):
             )
             self.norm_layers.append(LayerNorm(hidden_channels))
         self.proj = nn.Conv1d(hidden_channels, out_channels, 1)
-        self.proj.weight.data.zero_()
-        self.proj.bias.data.zero_()
+        self.proj.weight.zero_()
+        self.proj.bias.zero_()
 
     def forward(self, x, x_mask):
         x_org = x
@@ -187,7 +187,7 @@ class WN(torch.nn.Module):
 
     def forward(self, x, x_mask, g=None, **kwargs):
         output = torch.zeros_like(x)
-        n_channels_tensor = torch.IntTensor([self.hidden_channels])
+        n_channels_tensor = torch.tensor([self.hidden_channels], dtype=torch.int32)
 
         if g is not None:
             g = self.cond_layer(g)
@@ -434,8 +434,8 @@ class ResidualCouplingLayer(nn.Module):
             gin_channels=gin_channels,
         )
         self.post = nn.Conv1d(hidden_channels, self.half_channels * (2 - mean_only), 1)
-        self.post.weight.data.zero_()
-        self.post.bias.data.zero_()
+        self.post.weight.zero_()
+        self.post.bias.zero_()
 
     def forward(self, x, x_mask, g=None, reverse=False):
         x0, x1 = torch.split(x, [self.half_channels] * 2, 1)
@@ -486,8 +486,8 @@ class ConvFlow(nn.Module):
         self.proj = nn.Conv1d(
             filter_channels, self.half_channels * (num_bins * 3 - 1), 1
         )
-        self.proj.weight.data.zero_()
-        self.proj.bias.data.zero_()
+        self.proj.weight.zero_()
+        self.proj.bias.zero_()
 
     def forward(self, x, x_mask, g=None, reverse=False):
         x0, x1 = torch.split(x, [self.half_channels] * 2, 1)

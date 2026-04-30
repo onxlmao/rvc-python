@@ -1,5 +1,7 @@
 # RVC-Python
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/onxlmao/rvc-python/blob/main/rvc_python_demo.ipynb)
+
 A high-performance Python library for **RVC (Retrieval-based Voice Conversion)** — convert voices via CLI, Python API, or a REST API server.
 
 Supports **Python 3.12+**, GPU (CUDA/MPS/XPU) acceleration, and multiple pitch extraction algorithms.
@@ -163,6 +165,20 @@ pip install -e .
 ```
 
 > **Note**: The `fairseq` dependency is installed from a fork (`fumiama/fairseq`) that includes fixes for RVC compatibility. This is automatically handled by pip.
+
+### Google Colab
+
+Click the badge below to open a ready-to-use demo notebook with GPU support:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/onxlmao/rvc-python/blob/main/rvc_python_demo.ipynb)
+
+The Colab notebook includes:
+- One-click installation with CUDA support
+- Interactive file upload for models and audio
+- Adjustable parameters via sliders
+- Single file and batch conversion modes
+- A/B comparison with different pitch shifts
+- One-click download of converted audio
 
 ---
 
@@ -865,12 +881,16 @@ Ensure `intel_extension_for_pytorch` is installed and your Intel GPU drivers are
 
 - **Python 3.12+ support**: Updated minimum Python version to 3.12, fixed all compatibility issues
 - **`torch.load()` fixes**: Added `weights_only=False` to all model loading calls for Python 3.12+ compatibility
+- **Deprecated torch API fixes**: Replaced `torch.FloatTensor/IntTensor/LongTensor/BoolTensor` with modern `torch.tensor(..., dtype=...)` across all files
+- **Removed legacy `.data` access**: Cleaned up unnecessary `.data` on tensor operations in pipeline, rmvpe, modules, and commons
+- **Modern parameter initialization**: Replaced `.data.zero_()` and `.data.normal_()` with idiomatic `.zero_()` and `.normal_()` calls
 - **Relaxed numpy constraint**: Removed `numpy<2.0.0` upper bound to support numpy 2.x
 - **Updated numba**: Bumped minimum to `>=0.60.0` for Python 3.12+ support
 - **Updated faiss-cpu**: Now requires `>=1.8.0` with proper Python 3.12+ wheels
 - **Graceful pitch imports**: `pyworld`, `torchcrepe`, and `parselmouth` imports are now optional with clear error messages
 - **Fixed device check logic**: Corrected `or` to `and` in MPS/XPU device type casting
 - **Added missing dependencies**: `fastapi`, `uvicorn`, `loguru`, `pyworld`, `torchcrepe`, `av`
+- **Google Colab demo**: Added interactive notebook with GPU support, file upload, batch processing, and A/B comparison
 - **Comprehensive documentation**: Full README with architecture, API reference, and troubleshooting
 - **Bug fix**: Added missing `os` import in `modules.py`
 

@@ -630,7 +630,7 @@ class SynthesizerTrnMsNSFsidM(nn.Module):
     def construct_spkmixmap(self, n_speaker):
         self.speaker_map = torch.zeros((n_speaker, 1, 1, self.gin_channels))
         for i in range(n_speaker):
-            self.speaker_map[i] = self.emb_g(torch.LongTensor([[i]]))
+            self.speaker_map[i] = self.emb_g(torch.tensor([[i]], dtype=torch.long))
         self.speaker_map = self.speaker_map.unsqueeze(0)
 
     def forward(self, phone, phone_lengths, pitch, nsff0, g, rnd, max_len=None):

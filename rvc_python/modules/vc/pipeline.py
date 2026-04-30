@@ -237,7 +237,7 @@ class Pipeline(object):
             feats = feats.mean(-1)
         assert feats.dim() == 1, feats.dim()
         feats = feats.view(1, -1)
-        padding_mask = torch.BoolTensor(feats.shape).to(self.device).fill_(False)
+        padding_mask = torch.zeros(feats.shape, dtype=torch.bool, device=self.device)
 
         inputs = {
             "source": feats.to(self.device),
@@ -298,7 +298,7 @@ class Pipeline(object):
         with torch.no_grad():
             hasp = pitch is not None and pitchf is not None
             arg = (feats, p_len, pitch, pitchf, sid) if hasp else (feats, p_len, sid)
-            audio1 = (net_g.infer(*arg)[0][0, 0]).data.cpu().float().numpy()
+            audio1 = (net_g.infer(*arg)[0][0, 0]).cpu().float().numpy()
             del hasp, arg
         del feats, p_len, padding_mask
         if torch.cuda.is_available():

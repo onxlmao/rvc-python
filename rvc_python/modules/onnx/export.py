@@ -12,7 +12,7 @@ def export_onnx(ModelPath, ExportedPath):
     test_phone_lengths = torch.tensor([200]).long()  # hidden unit 长度（貌似没啥用）
     test_pitch = torch.randint(size=(1, 200), low=5, high=255)  # 基频（单位赫兹）
     test_pitchf = torch.rand(1, 200)  # nsf基频
-    test_ds = torch.LongTensor([0])  # 说话人ID
+    test_ds = torch.tensor([0], dtype=torch.long)  # speaker ID
     test_rnd = torch.rand(1, 192, 200)  # 噪声（加入随机因子）
 
     device = "cpu"  # 导出时设备（不影响使用模型）

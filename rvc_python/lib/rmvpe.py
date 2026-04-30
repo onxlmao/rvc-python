@@ -58,8 +58,8 @@ class STFT(torch.nn.Module):
         fourier_basis = np.vstack(
             [np.real(fourier_basis[:cutoff, :]), np.imag(fourier_basis[:cutoff, :])]
         )
-        forward_basis = torch.FloatTensor(fourier_basis)
-        inverse_basis = torch.FloatTensor(np.linalg.pinv(fourier_basis))
+        forward_basis = torch.tensor(fourier_basis, dtype=torch.float32)
+        inverse_basis = torch.tensor(np.linalg.pinv(fourier_basis), dtype=torch.float32)
 
         assert filter_length >= self.win_length
         # get window and zero center pad it to filter_length
@@ -101,7 +101,7 @@ class STFT(torch.nn.Module):
         imag_part = forward_transform[:, cutoff:, :]
         magnitude = torch.sqrt(real_part**2 + imag_part**2)
         if return_phase:
-            phase = torch.atan2(imag_part.data, real_part.data)
+            phase = torch.atan2(imag_part, real_part)
             return magnitude, phase
         else:
             return magnitude
